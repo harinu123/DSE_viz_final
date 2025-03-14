@@ -83,11 +83,10 @@ elif slide == "Tasks":
         **Key Tasks:**
         
         1. **Data Exploration:** Analyze and understand the dataset.
-        2. **Preprocessing:** Clean and transform the raw data.
-        3. **Modeling:** Fine-tune transformer-based models like BERT.
-        4. **Visualization:** Use BERTViz to inspect internal attention mechanisms.
-        5. **Evaluation:** Assess model performance using standard metrics.
-        6. **Interpretability:** Leverage visual insights to diagnose and improve model behavior.
+        2. **Modeling:** Fine-tune transformer-based models like BERT.
+        3. **Visualization:** Use BERTViz to inspect internal attention mechanisms.
+        4. **Evaluation:** Assess model performance using standard metrics.
+        5. **Interpretability:** Leverage visual insights to diagnose and improve model behavior.
         """
     )
 
