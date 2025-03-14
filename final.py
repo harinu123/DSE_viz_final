@@ -11,8 +11,6 @@ except RuntimeError:
     asyncio.set_event_loop(loop)
 
 # --- Expanded Monkey Patch for IPython.core.display ---
-# Some versions of BERTViz attempt to import display, HTML, and Javascript
-# from IPython.core.display, which might fail in newer IPython versions.
 try:
     from IPython.core.display import display, HTML, Javascript
 except ImportError:
@@ -30,23 +28,23 @@ from transformers import BertTokenizer, BertModel
 from bertviz import head_view
 import streamlit.components.v1 as components
 
-# Configure the Streamlit page layout and title.
 st.set_page_config(page_title="Interactive Transformer Visualization", layout="wide")
 
 # Use st.cache_resource to cache the expensive resource (BERT model & tokenizer)
 @st.cache_resource
 def load_model_and_tokenizer():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertModel.from_pretrained('bert-base-uncased', output_attentions=True)
+    # Use the attn_implementation="eager" to remove the warning about BertSdpaSelfAttention
+    model = BertModel.from_pretrained(
+        'bert-base-uncased',
+        output_attentions=True,
+        attn_implementation="eager"
+    )
     return tokenizer, model
 
 tokenizer, model = load_model_and_tokenizer()
 
 def get_attentions(text_a, text_b=None):
-    """
-    Given one or two input sentences, this function tokenizes the text,
-    computes the model outputs, and returns the attention weights and token list.
-    """
     inputs = tokenizer.encode_plus(text_a, text_b, return_tensors='pt')
     outputs = model(**inputs)
     attentions = outputs.attentions  # Tuple of attention tensors (one per layer)
@@ -84,9 +82,7 @@ elif slide == "Default Visualization":
     if st.button("Visualize Attention"):
         with st.spinner("Computing attention..."):
             attentions, tokens = get_attentions(sentence_a, sentence_b)
-            # Generate the HTML visualization using BERTViz's head_view.
             html = head_view(attentions, tokens)
-            # Embed the interactive visualization into Streamlit.
             components.html(html, height=800, scrolling=True)
 
 elif slide == "Custom Input Visualization":
