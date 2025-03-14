@@ -2,3 +2,5 @@ streamlit
 torch
 transformers
 bertviz
+ipython
+ipywidgets
