@@ -1,13 +1,37 @@
 import streamlit as st
+import asyncio
+
+# Ensure a running event loop (Streamlit environments sometimes lack one)
+try:
+    asyncio.get_running_loop()
+except RuntimeError:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+# --- Monkey Patch to Resolve IPython Import Error ---
+# Some versions of BERTViz attempt to import `display` from IPython.core.display,
+# which might fail in newer IPython versions. This patch redirects the import.
+try:
+    from IPython.core.display import display
+except ImportError:
+    import IPython.display as ip_disp
+    import sys
+    import types
+    ipy_core_display = types.ModuleType("IPython.core.display")
+    ipy_core_display.display = ip_disp.display
+    sys.modules["IPython.core.display"] = ipy_core_display
+    from IPython.core.display import display
+# --- End of Monkey Patch ---
+
 import torch
 from transformers import BertTokenizer, BertModel
 from bertviz import head_view
 import streamlit.components.v1 as components
 
-# Set page configuration
+# Configure the Streamlit page layout and title.
 st.set_page_config(page_title="Interactive Transformer Visualization", layout="wide")
 
-# Load model and tokenizer once (caching speeds up subsequent runs)
+# Cache the loading of the model and tokenizer to speed up subsequent runs.
 @st.cache(allow_output_mutation=True)
 def load_model_and_tokenizer():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -23,11 +47,11 @@ def get_attentions(text_a, text_b=None):
     """
     inputs = tokenizer.encode_plus(text_a, text_b, return_tensors='pt')
     outputs = model(**inputs)
-    attentions = outputs.attentions  # A tuple of attention tensors (one per layer)
+    attentions = outputs.attentions  # Tuple of attention tensors (one per layer)
     tokens = tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])
     return attentions, tokens
 
-# Sidebar: Navigation to mimic PPT slides
+# Sidebar navigation to simulate PPT slides.
 st.sidebar.title("Interactive Transformer Visualization")
 slide = st.sidebar.radio("Select Slide", 
                          ["Introduction", "Default Visualization", "Custom Input Visualization"])
@@ -58,23 +82,20 @@ elif slide == "Default Visualization":
     if st.button("Visualize Attention"):
         with st.spinner("Computing attention..."):
             attentions, tokens = get_attentions(sentence_a, sentence_b)
-            # Generate the HTML for BERTViz head view
+            # Generate the HTML visualization using BERTViz's head_view.
             html = head_view(attentions, tokens)
-            # Embed the interactive visualization in Streamlit
+            # Embed the interactive visualization into Streamlit.
             components.html(html, height=800, scrolling=True)
 
 elif slide == "Custom Input Visualization":
     st.title("Custom Input Visualization")
     st.markdown("Enter your own sentences to visualize how BERT's self-attention mechanism responds to different inputs.")
     
-    text_a = st.text_area("Enter Sentence A", 
-                          value="The quick brown fox jumps over the lazy dog.")
-    text_b = st.text_area("Enter Sentence B (optional)", 
-                          value="The lazy dog was surprised by the quick brown fox.")
+    text_a = st.text_area("Enter Sentence A", value="The quick brown fox jumps over the lazy dog.")
+    text_b = st.text_area("Enter Sentence B (optional)", value="The lazy dog was surprised by the quick brown fox.")
     
     if st.button("Visualize Custom Attention"):
         with st.spinner("Computing attention..."):
-            # If Sentence B is left empty, run with a single sentence input.
             attentions, tokens = get_attentions(text_a, text_b if text_b.strip() != "" else None)
             html = head_view(attentions, tokens)
             components.html(html, height=800, scrolling=True)
