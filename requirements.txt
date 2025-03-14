@@ -4,4 +4,4 @@ transformers
 bertviz
 ipython == 9.0.2
 ipywidgets
-python==3.10
+
