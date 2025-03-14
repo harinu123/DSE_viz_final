@@ -3,9 +3,9 @@ import streamlit.components.v1 as components
 import os
 
 # Set page configuration
-st.set_page_config(page_title="Project Presentation with BERTViz", layout="wide")
+st.set_page_config(page_title="Project Presentation with Tutorial", layout="wide")
 
-# Define slide options – both text-based and visualization-based
+# Define slide options – both text-based and the tutorial slide
 slides = [
     "Introduction",
     "Motivation",
@@ -14,16 +14,14 @@ slides = [
     "Solutions",
     "Results & Findings",
     "Conclusion",
-    "Head View",
-    "Model View",
-    "Neuron View"
+    "Tutorial"
 ]
 
 # Sidebar Navigation for Presentation Slides
 st.sidebar.title("Presentation Slides")
 slide = st.sidebar.radio("Select Slide", slides)
 
-# Define functions to load static HTML files (for visualization slides)
+# Function to load static HTML file
 def load_html(file_name):
     try:
         with open(file_name, "r", encoding="utf-8") as f:
@@ -40,8 +38,9 @@ if slide == "Introduction":
         Welcome to this interactive presentation where we explore the inner workings of a BERT model.
         
         This presentation is divided into two parts:
+        
         1. **Project Overview:** Motivation, dataset preparation, tasks, solutions, and results.
-        2. **BERTViz Visualizations:** Static interactive visualizations (Head View, Model View, Neuron View) generated from our BERT model.
+        2. **Tutorial:** A full interactive walkthrough (pre-generated) showing our results and visualizations.
         
         Use the sidebar to navigate between slides.
         """
@@ -55,8 +54,8 @@ elif slide == "Motivation":
         **Why This Project?**
         
         - In today's data-driven world, understanding the inner workings of transformer models like BERT is essential.
-        - Our goal is to demystify the “black box” of these models by visualizing attention mechanisms.
-        - This can lead to improved model interpretability and performance.
+        - Our goal is to demystify the “black box” of these models by visualizing their attention mechanisms.
+        - Improved interpretability can lead to better model performance and more responsible AI.
         """
     )
 
@@ -66,14 +65,14 @@ elif slide == "Dataset & Data Wrangling Overview":
     st.markdown(
         """
         **Dataset Overview:**
-        - **Source:** Data collected from multiple sources (social media, news, academic articles).
+        - **Source:** Collected from multiple sources (social media, news, academic articles).
         - **Size:** Over 100,000 samples.
-        - **Features:** Text data, metadata, and labels.
+        - **Features:** Includes text data, metadata, and labels.
         
         **Data Wrangling Steps:**
-        - Data cleaning: removal of noise, stopwords, and non-ASCII characters.
-        - Normalization: lowercasing, stemming, and lemmatization.
-        - Handling missing values and feature engineering.
+        - Cleaning: Removal of noise, stopwords, and non-ASCII characters.
+        - Normalization: Lowercasing, stemming, and lemmatization.
+        - Handling Missing Values and Feature Engineering.
         """
     )
 
@@ -87,9 +86,9 @@ elif slide == "Tasks":
         1. **Data Exploration:** Analyze and understand the dataset.
         2. **Preprocessing:** Clean and transform raw data.
         3. **Modeling:** Fine-tune transformer-based models like BERT.
-        4. **Visualization:** Use BERTViz to visualize model attention mechanisms.
-        5. **Evaluation:** Assess model performance with standard metrics.
-        6. **Interpretability:** Utilize visual insights to diagnose model behavior.
+        4. **Visualization:** Use BERTViz to inspect model attention mechanisms.
+        5. **Evaluation:** Assess model performance using standard metrics.
+        6. **Interpretability:** Leverage visual insights to diagnose model behavior.
         """
     )
 
@@ -100,10 +99,10 @@ elif slide == "Solutions":
         """
         **Our Approach:**
         
-        - Implemented transformer-based models (BERT) fine-tuned on our dataset.
+        - Implemented a transformer-based model (BERT) fine-tuned on our dataset.
         - Developed a robust data processing pipeline.
-        - Leveraged interactive visualization tools (BERTViz) to interpret internal model workings.
-        - Combined quantitative metrics with qualitative insights to refine the model.
+        - Leveraged interactive visualization tools (BERTViz) to uncover model internals.
+        - Combined quantitative performance metrics with qualitative visual insights.
         """
     )
 
@@ -114,13 +113,13 @@ elif slide == "Results & Findings":
         """
         **Key Outcomes:**
         
-        - Achieved an 8-12% boost in model accuracy compared to baseline models.
-        - Visualization revealed that certain attention heads capture syntactic structure, while others focus on semantics.
-        - Discovered valuable insights on data distribution and feature importance.
+        - Achieved an 8-12% improvement in model accuracy compared to baseline methods.
+        - Visualizations revealed that certain attention heads capture syntactic structure while others capture semantics.
+        - Discovered insights on feature importance and data distribution.
         
         **Conclusions:**
-        - Enhanced interpretability of transformer models.
-        - Identification of specific areas for model improvement.
+        - Enhanced model interpretability.
+        - Identified areas for further model improvements.
         """
     )
 
@@ -131,38 +130,27 @@ elif slide == "Conclusion":
         """
         **Summary:**
         
-        - This project demonstrates how advanced transformer models can be demystified through visualization.
-        - A well-designed data wrangling pipeline and interactive visualization are key to understanding model behavior.
+        - This project demonstrates how advanced transformer models like BERT can be interpreted using visualization.
+        - A well-designed data pipeline and interactive visualization are key to understanding model behavior.
         
         **Future Work:**
-        - Scale up the analysis to larger datasets.
-        - Explore additional transformer architectures.
-        - Integrate user feedback to further refine the model.
+        - Scale the analysis to larger datasets.
+        - Explore additional transformer architectures and interpretability techniques.
+        - Integrate user feedback to refine the model further.
         
         **Thank you for your attention!**
         """
     )
 
-# Slide: Head View Visualization
-elif slide == "Head View":
-    st.title("Head View Visualization")
-    st.markdown("This slide displays the **Head View** visualization as a pre-generated static HTML file.")
-    html_code = load_html("head_view.html")
-    st.write(f"Loaded head_view.html (length: {len(html_code)} characters)")
-    components.html(html_code, height=800, scrolling=True)
-
-# Slide: Model View Visualization
-elif slide == "Model View":
-    st.title("Model View Visualization")
-    st.markdown("This slide displays the **Model View** visualization as a pre-generated static HTML file.")
-    html_code = load_html("model_view.html")
-    st.write(f"Loaded model_view.html (length: {len(html_code)} characters)")
-    components.html(html_code, height=800, scrolling=True)
-
-# Slide: Neuron View Visualization
-elif slide == "Neuron View":
-    st.title("Neuron View Visualization")
-    st.markdown("This slide displays the **Neuron View** visualization as a pre-generated static HTML file.")
-    html_code = load_html("neuron_view.html")
-    st.write(f"Loaded neuron_view.html (length: {len(html_code)} characters)")
+# Slide: Tutorial (Embedding the full HTML file)
+elif slide == "Tutorial":
+    st.title("Tutorial")
+    st.markdown(
+        """
+        Below is the complete tutorial that includes all our results and visualizations.
+        This pre-generated HTML file contains interactive elements from our BERTViz analysis.
+        """
+    )
+    html_code = load_html("tutorial.html")
+    st.write(f"Loaded tutorial.html (length: {len(html_code)} characters)")
     components.html(html_code, height=800, scrolling=True)
