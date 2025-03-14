@@ -24,17 +24,18 @@ except ImportError:
 # --- End of Monkey Patch ---
 
 import torch
-from transformers import BertTokenizer, BertModel
+from transformers import AutoTokenizer, BertModel
 from bertviz import head_view
 import streamlit.components.v1 as components
 
+# Configure the Streamlit page layout and title.
 st.set_page_config(page_title="Interactive Transformer Visualization", layout="wide")
 
 # Use st.cache_resource to cache the expensive resource (BERT model & tokenizer)
 @st.cache_resource
 def load_model_and_tokenizer():
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    # Use the attn_implementation="eager" to remove the warning about BertSdpaSelfAttention
+    tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+    # Specify attn_implementation="eager" to remove the BertSdpaSelfAttention warning
     model = BertModel.from_pretrained(
         'bert-base-uncased',
         output_attentions=True,
