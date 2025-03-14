@@ -2,5 +2,5 @@ streamlit
 torch
 transformers
 bertviz
-ipython
+ipython == 9.0.2
 ipywidgets
