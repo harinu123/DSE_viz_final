@@ -1,6 +1,7 @@
 import streamlit as st
 import asyncio
 import torch 
+import os
 torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
 
 # Ensure a running event loop
