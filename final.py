@@ -56,7 +56,7 @@ elif slide == "Motivation":
         
         - In today's data-driven world, understanding the inner workings of transformer models like BERT is essential.
         - We aim to demystify the "black box" of these models by visualizing their attention mechanisms.
-        - Improved interpretability can lead to better performance, fairness, and more responsible AI.
+        - Improved interpretability can lead to better performance, fairness, and more responsible AI free of bias.
         """
     )
 
@@ -66,14 +66,12 @@ elif slide == "Dataset & Data Wrangling Overview":
     st.markdown(
         """
         **Dataset Overview:**
-        - **Source:** Collected from multiple sources (social media, news, academic articles).
-        - **Size:** Over 100,000 samples.
-        - **Features:** Includes text data, metadata, and labels.
+        - **Source:** BERT model from hugging face.
+        - **Size:** 300 million parameter model 
+
         
         **Preprocessing & Augmentation:**
-        - **Cleaning:** Removal of noise, stopwords, and non-ASCII characters.
-        - **Normalization:** Lowercasing, stemming, and lemmatization.
-        - **Feature Engineering:** Handling missing values and creating new features.
+        - **Setup:** We load the tokenizer and the attention parts. No further modification to the model.
         """
     )
 
@@ -127,8 +125,7 @@ elif slide == "Solutions":
         **Our Approach:**
         
         - Implemented a transformer-based model (BERT) fine-tuned on our dataset.
-        - Developed a robust data processing and wrangling pipeline.
-        - Leveraged interactive visualization tools (BERTViz) to explore attention mechanisms.
+        - Leveraged interactive visualization tools to explore attention mechanisms.
         - Designed controlled experiments (e.g., minimal pairs) to test for gender bias.
         - Combined qualitative visualization insights with quantitative attention analysis.
         """
@@ -140,7 +137,7 @@ elif slide == "Tutorial":
     st.markdown(
         """
         Below is the complete interactive tutorial that includes all our results and visualizations.
-        This pre-generated HTML file contains interactive elements from our BERTViz analysis.
+        This pre-generated HTML file contains interactive elements from our analysis.
         """
     )
     html_code = load_html("tutorial.html")
@@ -154,7 +151,6 @@ elif slide == "Results & Findings":
         """
         **Key Outcomes:**
         
-        - Achieved an 8-12% improvement in model accuracy compared to baseline methods.
         - Visualizations revealed that some attention heads capture syntactic structure while others capture semantics.
         - Experiments with minimal pairs indicate differences in attention patterns for gendered tokens, suggesting potential bias.
         - Quantitative analysis of attention weights supports these visual insights.
