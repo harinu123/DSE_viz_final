@@ -1,5 +1,7 @@
 import streamlit as st
 import asyncio
+import torch 
+torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
 
 # Ensure a running event loop
 try:
@@ -11,7 +13,7 @@ except RuntimeError:
 # Use the recommended import for IPython.display to avoid the deprecation warning
 from IPython.display import display, HTML, Javascript
 
-import torch
+# import torch
 from transformers import AutoTokenizer, BertModel
 from bertviz import head_view
 import streamlit.components.v1 as components
