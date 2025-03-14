@@ -33,8 +33,8 @@ import streamlit.components.v1 as components
 # Configure the Streamlit page layout and title.
 st.set_page_config(page_title="Interactive Transformer Visualization", layout="wide")
 
-# Cache the loading of the model and tokenizer to speed up subsequent runs.
-@st.cache(allow_output_mutation=True)
+# Use st.cache_resource to cache the expensive resource (BERT model & tokenizer)
+@st.cache_resource
 def load_model_and_tokenizer():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     model = BertModel.from_pretrained('bert-base-uncased', output_attentions=True)
