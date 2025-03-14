@@ -3,18 +3,19 @@ import streamlit.components.v1 as components
 import os
 
 # Set page configuration
-st.set_page_config(page_title="Project Presentation with Tutorial", layout="wide")
+st.set_page_config(page_title="Project Presentation with BERTViz", layout="wide")
 
-# Define slide options – both text-based and the tutorial slide
+# Define slide options in the desired order
 slides = [
     "Introduction",
     "Motivation",
     "Dataset & Data Wrangling Overview",
     "Tasks",
+    "Research Questions",
     "Solutions",
+    "Tutorial",
     "Results & Findings",
-    "Conclusion",
-    "Tutorial"
+    "Conclusion"
 ]
 
 # Sidebar Navigation for Presentation Slides
@@ -37,10 +38,10 @@ if slide == "Introduction":
         """
         Welcome to this interactive presentation where we explore the inner workings of a BERT model.
         
-        This presentation is divided into two parts:
+        This presentation is divided into two main parts:
         
-        1. **Project Overview:** Motivation, dataset preparation, tasks, solutions, and results.
-        2. **Tutorial:** A full interactive walkthrough (pre-generated) showing our results and visualizations.
+        1. **Project Overview:** Background, motivation, dataset preparation, tasks, research questions, solutions, and results.
+        2. **Tutorial:** A complete interactive walkthrough (pre-generated) showing our results and visualizations.
         
         Use the sidebar to navigate between slides.
         """
@@ -51,11 +52,11 @@ elif slide == "Motivation":
     st.title("Motivation")
     st.markdown(
         """
-        **Why This Project?**
+        **Background & Objectives:**
         
         - In today's data-driven world, understanding the inner workings of transformer models like BERT is essential.
-        - Our goal is to demystify the “black box” of these models by visualizing their attention mechanisms.
-        - Improved interpretability can lead to better model performance and more responsible AI.
+        - We aim to demystify the "black box" of these models by visualizing their attention mechanisms.
+        - Improved interpretability can lead to better performance, fairness, and more responsible AI.
         """
     )
 
@@ -69,10 +70,10 @@ elif slide == "Dataset & Data Wrangling Overview":
         - **Size:** Over 100,000 samples.
         - **Features:** Includes text data, metadata, and labels.
         
-        **Data Wrangling Steps:**
-        - Cleaning: Removal of noise, stopwords, and non-ASCII characters.
-        - Normalization: Lowercasing, stemming, and lemmatization.
-        - Handling Missing Values and Feature Engineering.
+        **Preprocessing & Augmentation:**
+        - **Cleaning:** Removal of noise, stopwords, and non-ASCII characters.
+        - **Normalization:** Lowercasing, stemming, and lemmatization.
+        - **Feature Engineering:** Handling missing values and creating new features.
         """
     )
 
@@ -84,11 +85,37 @@ elif slide == "Tasks":
         **Key Tasks:**
         
         1. **Data Exploration:** Analyze and understand the dataset.
-        2. **Preprocessing:** Clean and transform raw data.
+        2. **Preprocessing:** Clean and transform the raw data.
         3. **Modeling:** Fine-tune transformer-based models like BERT.
-        4. **Visualization:** Use BERTViz to inspect model attention mechanisms.
+        4. **Visualization:** Use BERTViz to inspect internal attention mechanisms.
         5. **Evaluation:** Assess model performance using standard metrics.
-        6. **Interpretability:** Leverage visual insights to diagnose model behavior.
+        6. **Interpretability:** Leverage visual insights to diagnose and improve model behavior.
+        """
+    )
+
+# Slide: Research Questions
+elif slide == "Research Questions":
+    st.title("Research Questions: Investigating Gender Bias via Attention")
+    st.markdown(
+        """
+        We aim to explore whether the language model exhibits gender bias using its attention mechanisms.  
+        
+        **Five Key Questions:**
+        
+        1. **Gendered Token Attention:**  
+           How do attention patterns differ when processing sentences with gender-specific pronouns (e.g., "he" vs. "she") in similar contexts?
+           
+        2. **Role and Occupation Bias:**  
+           When gendered pronouns are combined with occupation-related terms (e.g., "nurse" vs. "doctor"), how is attention distributed between these tokens?
+           
+        3. **Contextual Dependency Effects:**  
+           Does the presence of gendered language shift attention to surrounding context words, affecting semantic interpretation?
+           
+        4. **Layer-wise and Head-wise Variability:**  
+           At what depth (layer or head) do gender-specific patterns emerge? Are lower layers focused on syntax and higher layers on semantics?
+           
+        5. **Attention-Driven Prediction Bias:**  
+           Can variations in attention patterns for gendered sentences be linked to differences in downstream predictions, indicating a real-world bias?
         """
     )
 
@@ -100,11 +127,25 @@ elif slide == "Solutions":
         **Our Approach:**
         
         - Implemented a transformer-based model (BERT) fine-tuned on our dataset.
-        - Developed a robust data processing pipeline.
-        - Leveraged interactive visualization tools (BERTViz) to uncover model internals.
-        - Combined quantitative performance metrics with qualitative visual insights.
+        - Developed a robust data processing and wrangling pipeline.
+        - Leveraged interactive visualization tools (BERTViz) to explore attention mechanisms.
+        - Designed controlled experiments (e.g., minimal pairs) to test for gender bias.
+        - Combined qualitative visualization insights with quantitative attention analysis.
         """
     )
+
+# Slide: Tutorial (Embedding the full HTML file)
+elif slide == "Tutorial":
+    st.title("Tutorial")
+    st.markdown(
+        """
+        Below is the complete interactive tutorial that includes all our results and visualizations.
+        This pre-generated HTML file contains interactive elements from our BERTViz analysis.
+        """
+    )
+    html_code = load_html("tutorial.html")
+    st.write(f"Loaded tutorial.html (length: {len(html_code)} characters)")
+    components.html(html_code, height=800, scrolling=True)
 
 # Slide: Results & Findings
 elif slide == "Results & Findings":
@@ -114,12 +155,13 @@ elif slide == "Results & Findings":
         **Key Outcomes:**
         
         - Achieved an 8-12% improvement in model accuracy compared to baseline methods.
-        - Visualizations revealed that certain attention heads capture syntactic structure while others capture semantics.
-        - Discovered insights on feature importance and data distribution.
+        - Visualizations revealed that some attention heads capture syntactic structure while others capture semantics.
+        - Experiments with minimal pairs indicate differences in attention patterns for gendered tokens, suggesting potential bias.
+        - Quantitative analysis of attention weights supports these visual insights.
         
         **Conclusions:**
-        - Enhanced model interpretability.
-        - Identified areas for further model improvements.
+        - Enhanced interpretability and diagnosis of transformer models.
+        - Identification of specific areas for further bias mitigation and model improvement.
         """
     )
 
@@ -130,27 +172,15 @@ elif slide == "Conclusion":
         """
         **Summary:**
         
-        - This project demonstrates how advanced transformer models like BERT can be interpreted using visualization.
+        - This project demonstrates how advanced transformer models like BERT can be interpreted through visualization.
         - A well-designed data pipeline and interactive visualization are key to understanding model behavior.
+        - Our investigation into gender bias via attention mechanisms offers valuable insights for improving model fairness.
         
         **Future Work:**
-        - Scale the analysis to larger datasets.
+        - Scale the analysis to larger, more diverse datasets.
         - Explore additional transformer architectures and interpretability techniques.
-        - Integrate user feedback to refine the model further.
+        - Integrate user feedback to refine models and bias mitigation strategies.
         
         **Thank you for your attention!**
         """
     )
-
-# Slide: Tutorial (Embedding the full HTML file)
-elif slide == "Tutorial":
-    st.title("Tutorial")
-    st.markdown(
-        """
-        Below is the complete tutorial that includes all our results and visualizations.
-        This pre-generated HTML file contains interactive elements from our BERTViz analysis.
-        """
-    )
-    html_code = load_html("tutorial.html")
-    st.write(f"Loaded tutorial.html (length: {len(html_code)} characters)")
-    components.html(html_code, height=800, scrolling=True)
