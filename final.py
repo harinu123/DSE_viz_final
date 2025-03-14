@@ -1,5 +1,7 @@
 import streamlit as st
 import asyncio
+import sys
+import types
 
 # Ensure a running event loop (Streamlit environments sometimes lack one)
 try:
@@ -8,19 +10,19 @@ except RuntimeError:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-# --- Monkey Patch to Resolve IPython Import Error ---
-# Some versions of BERTViz attempt to import `display` from IPython.core.display,
-# which might fail in newer IPython versions. This patch redirects the import.
+# --- Expanded Monkey Patch for IPython.core.display ---
+# Some versions of BERTViz attempt to import display, HTML, and Javascript
+# from IPython.core.display, which might fail in newer IPython versions.
 try:
-    from IPython.core.display import display
+    from IPython.core.display import display, HTML, Javascript
 except ImportError:
     import IPython.display as ip_disp
-    import sys
-    import types
     ipy_core_display = types.ModuleType("IPython.core.display")
     ipy_core_display.display = ip_disp.display
+    ipy_core_display.HTML = ip_disp.HTML
+    ipy_core_display.Javascript = ip_disp.Javascript
     sys.modules["IPython.core.display"] = ipy_core_display
-    from IPython.core.display import display
+    from IPython.core.display import display, HTML, Javascript
 # --- End of Monkey Patch ---
 
 import torch
