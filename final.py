@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import os
 
 # Set page configuration
-st.set_page_config(page_title="Project Presentation with BERTViz", layout="wide")
+st.set_page_config(page_title="Project Presentation for Data Viz final", layout="wide")
 
 # Define slide options in the desired order
 slides = [
